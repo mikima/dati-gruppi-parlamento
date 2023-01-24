@@ -1,0 +1,26 @@
+{
+  "type": "module",
+  "name": "parlamento-camera",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mikima/parlamento-camera.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mikima/parlamento-camera/issues"
+  },
+  "homepage": "https://github.com/mikima/parlamento-camera#readme",
+  "dependencies": {
+    "axios": "^1.2.4",
+    "cheerio": "^1.0.0-rc.12",
+    "node-fetch": "^3.3.0",
+    "pretty": "^2.0.0"
+  }
+}
