@@ -6,13 +6,22 @@ import cors from "cors";
 const app = express();
 app.use(cors());
 
+// define the port where client files will be provided
+let port = process.env.PORT || 3000;
+
 // prepare endpoint for camera data
 app.get("/camera", async (req, res) => {
-  let test = await gruppiDeputati();
-  res.send(test);
+  let data = await gruppiDeputati();
+  res.send(data);
 });
 
-//app.listen(3000, () => console.log("Example app listening on port 3000!"));
+// prepare endpoint for senato data
+app.get("/senato", async (req, res) => {
+  let data = await gruppiSenatori();
+  res.send(data);
+});
+
+app.listen(port, () => console.log("App ready"));
 
 async function gruppiDeputati() {
   const url = "https://www.camera.it/leg19/46";
@@ -47,23 +56,25 @@ async function gruppiDeputati() {
 }
 
 async function gruppiSenatori() {
-  const url = "https://www.senato.it/leg/19/BGT/Schede/MappaAula/00000000.htm";
+  const url = "https://www.senato.it/leg/19/BGT/Schede/Gruppi/Grp.html";
 
   const response = await fetch(url);
   const body = await response.text();
 
   let $ = load(body);
 
-  let items = $("#content > div.dxSmall > div.divBoxColDx dd");
+  let items = $(
+    "#content > div.sxSmall > div.testoCenter > div > table > tbody tr"
+  );
 
   let results = [];
 
   items.each((_, e) => {
-    let name = $(e).find("a").text();
-    let num = $(e).find("strong").text() * 1;
-    results.push({ name, num });
+    let cells = $(e).find("td");
+    let name = $(cells[0]).text();
+    let number = $(cells[1]).text() * 1;
+    results.push({ name, number });
   });
-  console.log(results);
-}
 
-gruppiSenatori();
+  return results.filter((d) => d.name != "Totale");
+}
